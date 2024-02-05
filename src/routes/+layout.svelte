@@ -1,5 +1,8 @@
 <script>
     import "../app.css";
+    import Navigatebar from './header.svelte'; 
   </script>
   
-  <slot />
+  
+<Navigatebar />
+<slot />
