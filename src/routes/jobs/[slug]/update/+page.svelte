@@ -1,12 +1,14 @@
 <script>
 import { PUBLIC_BACKEND_BASE_URL } from '$env/static/public';
 import { goto } from '$app/navigation';
-import { getUserId,getTokenFromLocalStorage } from './../../../utils/auth.js';
+import { getUserId,getTokenFromLocalStorage } from '../../../../utils/auth.js';
+import { editJobSuccessAlert, editJobFailedAlert } from '../../../../utils/alert.js';
 
 export let data;
+let clicked = false;
 
 let formErrors = "";
-// if user click update job button redirect to homepage
+// if user click update job button redirect to jobs page that the specific user created
 async function updatedJob() {
     goto(`/jobs/${data.job.id}`);
 }
@@ -14,10 +16,11 @@ async function updatedJob() {
 
 // Function to handle update job form 
 async function updateJob(evt) {
-    console.log(data.job.id)
+    // console.log(data.job.id)
     evt.preventDefault();
     const localStorage = getUserId();
     const getToken = getTokenFromLocalStorage();
+    clicked = true;
 
 
 const jobDetails = {
@@ -33,7 +36,7 @@ const jobDetails = {
   };
 
 const resp = await fetch(PUBLIC_BACKEND_BASE_URL + `/api/collections/jobs/records/${data.job.id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
@@ -43,11 +46,15 @@ const resp = await fetch(PUBLIC_BACKEND_BASE_URL + `/api/collections/jobs/record
       });
 
       if (resp.status == 200) {
-        updatedJob()
+        updatedJob();
+        editJobSuccessAlert();
       } else {
         const res = await resp.json();
         // console.log(res)
-        formErrors = res.message
+        formErrors = res.message;
+        clicked = false;
+        editJobFailedAlert();
+
       }
   }
 
@@ -78,7 +85,7 @@ const resp = await fetch(PUBLIC_BACKEND_BASE_URL + `/api/collections/jobs/record
             <label class= "label" for="maxAnnualCompensation"> 
                 <span class="label-text">Max Annual Compesation</span>
             </label>
-            <input value={data.job.maxAnnualCompensation} type="text" name="maxAnnualCompensation" placeholder="250000" class="input input-bordered w-full">
+            <input value={data.job.minAnnualCompensation} type="text" name="maxAnnualCompensation" placeholder="250000" class="input input-bordered w-full">
             <label class= "label" for="salary"> 
                 <span class="label-text-alt">USD</span>
                 <span class="label-text-alt">per annum</span>
@@ -121,9 +128,14 @@ const resp = await fetch(PUBLIC_BACKEND_BASE_URL + `/api/collections/jobs/record
         </div>
 
         <div class="form-control w-full mt-8">
-            <button class="btn btn-md" type="submit">
-                "UPDATE JOB"
+            {#if clicked}
+            <button class="btn btn-active btn-primary" type="submit">
+              <span class="loading loading-spinner hover:btn-accent"></span>
+              Update Job
             </button>
+            {:else}
+                <button class="btn btn-primary hover:btn-accent" type="submit">Update Job</button>
+            {/if}
         </div>
     </form>
 </div>

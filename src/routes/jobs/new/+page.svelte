@@ -2,18 +2,18 @@
     import { PUBLIC_BACKEND_BASE_URL } from '$env/static/public';
     import { goto } from '$app/navigation';
     import { getUserId } from './../../../utils/auth.js';
+    import { createJobSuccessAlert } from './../../../utils/alert.js';
 
   
     let formErrors = "";
-// if logged in user click post job redirect to homepage
-async function postedJob() {
-    goto('/');
-}
+    let clicked = false;
 
 // Function to handle form submission 
 async function postJob(evt) {
     evt.preventDefault();
     const localStorage = getUserId();
+    clicked = true;
+   
 
 // If user is logged in, proceed with form submission
 const jobData = {
@@ -39,13 +39,17 @@ const jobData = {
         body: JSON.stringify(jobData)
       });
 
+    const res = await resp.json();
+    // console.log(res.id)
       if (resp.status == 200) {
-        postedJob()
-      } else {
-        const res = await resp.json();
-        formErrors = res.data
-      }
+        goto(`/jobs/${res.id}`) //link back to the created job page
+        createJobSuccessAlert();
     
+      } else {
+        formErrors = res.data;
+        clicked = false;
+      
+      }
   }
 </script>
       
@@ -64,7 +68,7 @@ const jobData = {
             <label class= "label" for="minAnnualCompensation"> 
                 <span class="label-text">Min Annual Compesation</span>
             </label>
-            <input type="text" name="minAnnualCompensation" placeholder="40000" class="input input-bordered w-full">
+            <input type="number" name="minAnnualCompensation" placeholder="40000" class="input input-bordered w-full">
             <label class= "label" for="salary"> 
                 <span class="label-text-alt">USD</span>
                 <span class="label-text-alt">per annum</span>
@@ -75,7 +79,7 @@ const jobData = {
             <label class= "label" for="maxAnnualCompensation"> 
                 <span class="label-text">Max Annual Compesation</span>
             </label>
-            <input type="text" name="maxAnnualCompensation" placeholder="250000" class="input input-bordered w-full">
+            <input type="number" name="maxAnnualCompensation" placeholder="250000" class="input input-bordered w-full">
             <label class= "label" for="salary"> 
                 <span class="label-text-alt">USD</span>
                 <span class="label-text-alt">per annum</span>
@@ -118,9 +122,17 @@ const jobData = {
         </div>
 
         <div class="form-control w-full mt-8">
-            <button class="btn btn-md" type="submit">
+            <!-- <button class="btn btn-md" type="submit">
                 POST JOB
+            </button> -->
+            {#if clicked}
+            <button class="btn btn-active btn-primary" type="submit">
+              <span class="loading loading-spinner hover:btn-accent"></span>
+              Post Job
             </button>
+            {:else}
+                <button class="btn btn-primary hover:btn-accent" type="submit">Post Job</button>
+            {/if}
         </div>
     </form>
 </div>

@@ -2,8 +2,10 @@
     import { PUBLIC_BACKEND_BASE_URL } from '$env/static/public';
     import { goto } from '$app/navigation';
     import { authenticateUser } from './../../../utils/auth.js';
+    import { signUpAlert } from './../../../utils/alert.js';
 
     let formErrors = {};
+    let clicked = false;
     
   // this function is for suceessful signup will direct back to home page
     async function postSignUp() {
@@ -12,6 +14,8 @@
   //step 2: create a async function write the condition statement
     async function createUser(evt) {
       evt.preventDefault()
+      clicked = true;
+
       if (evt.target['password'].value != evt.target['password-confirmation'].value) {
         formErrors['password'] = { message: 'Password confirmation does not match' };
         return;
@@ -41,6 +45,7 @@
 
         if (res.success) {
             postSignUp();
+            signUpAlert();
         } else {
             throw "Sign up suceeded but authentication failed";
         }
@@ -48,6 +53,7 @@
         const res = await resp.json();
         // console.log(res)
         formErrors = res.data;
+        clicked = false;
       }
     }
   </script>
@@ -131,8 +137,15 @@
               {/if}
           </div>
   
-          <div class="form-control w-full mt-4">
-              <button class="btn btn-md">Create an Account</button>
-          </div>
+          <div class="form-control w-full mt-8">
+            {#if clicked}
+            <button class="btn btn-active btn-primary" type="submit">
+              <span class="loading loading-spinner hover:btn-accent"></span>
+              Sign Up
+            </button>
+            {:else}
+                <button class="btn btn-primary hover:btn-accent" type="submit">Sign Up</button>
+            {/if}
+        </div>
       </form>
   </div>

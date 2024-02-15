@@ -67,6 +67,7 @@ export async function isLoggedIn() {
         "userId": res.record.id
       }));
 
+      setLogIn.set(true); //log in is true now
       return true
     }
    // if the request fails or encounters an error, it returns false

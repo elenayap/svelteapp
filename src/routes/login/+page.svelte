@@ -2,8 +2,11 @@
 import { PUBLIC_BACKEND_BASE_URL } from '$env/static/public';
 import { authenticateUser } from '../../utils/auth.js';
 import { goto } from '$app/navigation';
+import { logInAlert, failedLogInAlert } from '../../utils/alert.js';
 
 let formErrors = "";
+//set a variable "clicked" to "false" initially, so when clicked is true, trigged different action
+let clicked = false; 
 
 async function postLogIn() {
       goto('/');
@@ -11,6 +14,7 @@ async function postLogIn() {
 
 async function logIn(evt) {
     evt.preventDefault()
+    clicked = true; //set clicked to true when log in 
 
       const userLogIn =  {
         username: evt.target['username'].value,
@@ -23,12 +27,13 @@ async function logIn(evt) {
 
         if (resp.success) {
             postLogIn();
+            logInAlert();
         }  else {
-        // console.log(res.res.message)
         //this res.res.message. the first res is res = await authenticateUser. 
         //the second res.message is belong to authenticateUser function res
         formErrors = resp.res.message;
-       
+        clicked = false; //set clicked to false when cant log in
+        failedLogInAlert();
       }
     }
 
@@ -47,7 +52,6 @@ async function logIn(evt) {
                 placeholder="johndoe"
                 class="input input-bordered w-full"
             />
-
             {#if formErrors}
               <div class="text-red-500 text-center mt-2">{formErrors}</div>
             {/if}
@@ -68,10 +72,16 @@ async function logIn(evt) {
               <div class="text-red-500 text-center mt-2">{formErrors}</div>
             {/if}
         </div>
-
         <div class="form-control w-full mt-4">
-              <button class="btn btn-md">LOG IN</button>
-        </div>
+            {#if clicked}
+            <button class="btn btn-active btn-primary">
+              <span class="loading loading-spinner hover:btn-accent"></span>
+              LOG IN
+            </button>
+            {:else}
+                <button class="btn btn-primary hover:btn-accent">LOG IN</button>
+            {/if}
+    </div>
     </form>
     </div>       
 
