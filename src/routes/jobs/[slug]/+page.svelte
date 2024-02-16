@@ -25,7 +25,7 @@ async function deleteUserJob(){
 
 const resp = await fetch(PUBLIC_BACKEND_BASE_URL + `/api/collections/jobs/records/${data.job.id}`, {
         method:'DELETE',
-        mode: 'cors',
+        mode: 'cors', //cross-origin resource sharing
         headers: {
           'Content-Type': 'application/json',
           'Authorization': getToken//must add 'Authorization': getToken to confirm job id and token authorized

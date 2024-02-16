@@ -5,7 +5,7 @@
     import { createJobSuccessAlert } from './../../../utils/alert.js';
 
   
-    let formErrors = "";
+    let formErrors = {}; //{{} for object
     let clicked = false;
 
 // Function to handle form submission 
@@ -62,7 +62,13 @@ const jobData = {
             <span class="label-text">Job Title</span>
         </label>
         <input type="text" name="title" placeholder="Software Enginner" class="input input-bordered w-full">
+        {#if 'title' in formErrors}
+                  <label class="label" for="title">
+                      <span class="label-text-alt text-red-500">{formErrors['title'].message}</span>
+                  </label>
+              {/if}
         </div>
+        
 
         <div class="form-control w-full">
             <label class= "label" for="minAnnualCompensation"> 
@@ -73,7 +79,13 @@ const jobData = {
                 <span class="label-text-alt">USD</span>
                 <span class="label-text-alt">per annum</span>
             </label>
+            {#if 'minAnnualCompensation' in formErrors}
+                  <label class="label" for="minAnnualCompensation">
+                      <span class="label-text-alt text-red-500">{formErrors['minAnnualCompensation'].message}</span>
+                  </label>
+              {/if}
         </div>
+        
 
         <div class="form-control w-full">
             <label class= "label" for="maxAnnualCompensation"> 
@@ -84,42 +96,78 @@ const jobData = {
                 <span class="label-text-alt">USD</span>
                 <span class="label-text-alt">per annum</span>
             </label>
+            {#if 'maxAnnualCompensation' in formErrors}
+                  <label class="label" for="maxAnnualCompensation">
+                      <span class="label-text-alt text-red-500">{formErrors['maxAnnualCompensation'].message}</span>
+                  </label>
+              {/if}
         </div>
+        
 
         <div class="form-control w-full">
             <label class= "label" for="employer"> 
                 <span class="label-text">Company Name</span>
             </label>
             <input type="text" name="employer" placeholder="e.g. Facebook" class="input input-bordered w-full">
-        </div>   
+            {#if 'employer' in formErrors}
+                  <label class="label" for="employer">
+                      <span class="label-text-alt text-red-500">{formErrors['employer'].message}</span>
+                  </label>
+              {/if}  
+        </div> 
+        
         
         <div class="form-control w-full">
             <label class= "label" for="location"> 
                 <span class="label-text">Job Location</span>
             </label>
             <input type="text" name="location" placeholder="e.g. Singapore" class="input input-bordered w-full">
+            {#if 'location' in formErrors}
+                  <label class="label" for="location">
+                      <span class="label-text-alt text-red-500">{formErrors['location'].message}</span>
+                  </label>
+              {/if}  
         </div>   
+        
 
         <div class="form-control">
             <label class= "label" for="description"> 
                 <span class="label-text">Description</span>
             </label>
             <textarea class="textarea textarea-bordered h-64" name="description" placeholder></textarea>
+            {#if 'description' in formErrors}
+                  <label class="label" for="description">
+                      <span class="label-text-alt text-red-500">{formErrors['description'].message}</span>
+                  </label>
+            {/if}  
         </div>
+        
 
         <div class="form-control">
             <label class= "label" for="requirements"> 
                 <span class="label-text">Requirements</span>
             </label>
             <textarea class="textarea textarea-bordered h-64" name="requirements" placeholder></textarea>
+                {#if 'requirements' in formErrors}
+            <label class="label" for="requirements">
+            <span class="label-text-alt text-red-500">{formErrors['requirements'].message}</span>
+             </label>
+                {/if} 
         </div>
+       
 
         <div class="form-control">
             <label class= "label" for="applicationInstructions"> 
                 <span class="label-text">Application Instruction</span>
             </label>
             <textarea class="textarea textarea-bordered h-24" name="applicationInstructions" placeholder></textarea>
+               {#if 'applicationInstructions' in formErrors}
+            <label class="label" for="applicationInstructions">
+            <span class="label-text-alt text-red-500">{formErrors['applicationInstructions'].message}</span>
+            </label>
+                {/if} 
         </div>
+     
 
         <div class="form-control w-full mt-8">
             <!-- <button class="btn btn-md" type="submit">

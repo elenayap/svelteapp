@@ -71,7 +71,7 @@
 <!-- button -->
           <div class="absolute bottom-4 right-4">
             <!-- Change button to anchor tag -->
-            <a class="btn btn-neutral" href="/jobs/{job.id}">Read More</a>
+            <a class="btn btn-ghost" href="/jobs/{job.id}">Read More</a>
           </div>
         </div>
       </div>

@@ -7,7 +7,7 @@ import { editJobSuccessAlert, editJobFailedAlert } from '../../../../utils/alert
 export let data;
 let clicked = false;
 
-let formErrors = "";
+let formErrors = {};
 // if user click update job button redirect to jobs page that the specific user created
 async function updatedJob() {
     goto(`/jobs/${data.job.id}`);
@@ -68,6 +68,11 @@ const resp = await fetch(PUBLIC_BACKEND_BASE_URL + `/api/collections/jobs/record
             <span class="label-text">Job Title</span>
         </label>
         <input value={data.job.title} type="text" name="title" placeholder="Software Enginner" class="input input-bordered w-full">
+        {#if 'title' in formErrors}
+                  <label class="label" for="title">
+                      <span class="label-text-alt text-red-500">{formErrors['title'].message}</span>
+                  </label>
+              {/if}
         </div>
 
         <div class="form-control w-full">
@@ -79,17 +84,27 @@ const resp = await fetch(PUBLIC_BACKEND_BASE_URL + `/api/collections/jobs/record
                 <span class="label-text-alt">USD</span>
                 <span class="label-text-alt">per annum</span>
             </label>
+        {#if 'minAnnualCompensation' in formErrors}
+                  <label class="label" for="minAnnualCompensation">
+                      <span class="label-text-alt text-red-500">{formErrors['minAnnualCompensation'].message}</span>
+                  </label>
+              {/if}
         </div>
 
         <div class="form-control w-full">
             <label class= "label" for="maxAnnualCompensation"> 
                 <span class="label-text">Max Annual Compesation</span>
             </label>
-            <input value={data.job.minAnnualCompensation} type="text" name="maxAnnualCompensation" placeholder="250000" class="input input-bordered w-full">
+            <input value={data.job.maxAnnualCompensation} type="text" name="maxAnnualCompensation" placeholder="250000" class="input input-bordered w-full">
             <label class= "label" for="salary"> 
                 <span class="label-text-alt">USD</span>
                 <span class="label-text-alt">per annum</span>
             </label>
+            {#if 'maxAnnualCompensation' in formErrors}
+                  <label class="label" for="maxAnnualCompensation">
+                      <span class="label-text-alt text-red-500">{formErrors['maxAnnualCompensation'].message}</span>
+                  </label>
+              {/if}
         </div>
 
         <div class="form-control w-full">
@@ -97,6 +112,11 @@ const resp = await fetch(PUBLIC_BACKEND_BASE_URL + `/api/collections/jobs/record
                 <span class="label-text">Company Name</span>
             </label>
             <input value={data.job.employer} type="text" name="employer" placeholder="e.g. Facebook" class="input input-bordered w-full">
+            {#if 'employer' in formErrors}
+                  <label class="label" for="employer">
+                      <span class="label-text-alt text-red-500">{formErrors['employer'].message}</span>
+                  </label>
+              {/if} 
         </div>   
         
         <div class="form-control w-full">
@@ -104,6 +124,11 @@ const resp = await fetch(PUBLIC_BACKEND_BASE_URL + `/api/collections/jobs/record
                 <span class="label-text">Job Location</span>
             </label>
             <input value={data.job.location} type="text" name="location" placeholder="e.g. Singapore" class="input input-bordered w-full">
+            {#if 'location' in formErrors}
+                  <label class="label" for="location">
+                      <span class="label-text-alt text-red-500">{formErrors['location'].message}</span>
+                  </label>
+              {/if} 
         </div>   
 
         <div class="form-control">
@@ -111,6 +136,11 @@ const resp = await fetch(PUBLIC_BACKEND_BASE_URL + `/api/collections/jobs/record
                 <span class="label-text">Description</span>
             </label>
             <textarea value={data.job.description} class="textarea textarea-bordered h-64" name="description" placeholder></textarea>
+            {#if 'description' in formErrors}
+                  <label class="label" for="description">
+                      <span class="label-text-alt text-red-500">{formErrors['description'].message}</span>
+                  </label>
+              {/if}
         </div>
 
         <div class="form-control">
@@ -118,6 +148,11 @@ const resp = await fetch(PUBLIC_BACKEND_BASE_URL + `/api/collections/jobs/record
                 <span class="label-text">Requirements</span>
             </label>
             <textarea value={data.job.requirements} class="textarea textarea-bordered h-64" name="requirements" placeholder></textarea>
+            {#if 'requirements' in formErrors}
+            <label class="label" for="requirements">
+            <span class="label-text-alt text-red-500">{formErrors['requirements'].message}</span>
+            </label>
+            {/if} 
         </div>
 
         <div class="form-control">
@@ -125,6 +160,11 @@ const resp = await fetch(PUBLIC_BACKEND_BASE_URL + `/api/collections/jobs/record
                 <span class="label-text">Application Instruction</span>
             </label>
             <textarea value={data.job.applicationInstructions} class="textarea textarea-bordered h-24" name="applicationInstructions" placeholder></textarea>
+            {#if 'applicationInstructions' in formErrors}
+            <label class="label" for="applicationInstructions">
+            <span class="label-text-alt text-red-500">{formErrors['applicationInstructions'].message}</span>
+            </label>
+             {/if} 
         </div>
 
         <div class="form-control w-full mt-8">
